@@ -24,7 +24,6 @@
 
       <div class="nav-row">
         <div class="nav-row__inner">
-          
           <form id="navSearch" class="search" method="get" role="search">
             <input
               class="search__input"
@@ -50,15 +49,14 @@
       (function () {
         const HOME = "../index.html#top";
         const PRODUCT = "../productview.html";
-
         const ORIGIN = window.location.origin;
 
         const brand = document.querySelector(".brand");
         if (brand) {
-          brand.addEventListener(
-            "click",
-            () => (window.parent.location.href = HOME),
-          );
+          brand.addEventListener("click", () => {
+            window.parent.location.href = HOME;
+          });
+
           brand.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
@@ -83,15 +81,16 @@
 
             const input = form.querySelector('input[name="q"]');
             const q = (input?.value || "").trim();
-
             const target = PRODUCT + (q ? "?q=" + encodeURIComponent(q) : "");
+
             window.parent.location.href = target;
           });
         }
 
         try {
           const parentPath =
-            window.parent.location.pathname || location.pathname;
+            window.parent.location.pathname || window.location.pathname;
+
           const current = parentPath
             .split("/")
             .pop()
@@ -103,16 +102,21 @@
             const file = href.split("/").pop().split("#")[0].split("?")[0];
 
             const isHome =
-              (current === "homepage.html" || current === "") &&
-              file === "homepage.html";
+              (current === "homepage.html" || current === "" || current === "index.html") &&
+              (file === "homepage.html" || file === "index.html");
+
             const isMatch = file && current && file === current;
 
-            if (isHome || isMatch) a.classList.add("is-active");
-            else a.classList.remove("is-active");
+            if (isHome || isMatch) {
+              a.classList.add("is-active");
+            } else {
+              a.classList.remove("is-active");
+            }
           });
         } catch (err) {}
 
         let lastH = 0;
+
         function postHeight() {
           const h = Math.ceil(document.documentElement.scrollHeight);
           if (Math.abs(h - lastH) < 2) return;
@@ -120,7 +124,7 @@
 
           window.parent.postMessage(
             { type: "setHeight", id: "navFrame", height: h },
-            ORIGIN,
+            ORIGIN
           );
         }
 
@@ -128,7 +132,9 @@
           if (event.origin !== ORIGIN) return;
           const data = event.data;
           if (!data || typeof data !== "object") return;
-          if (data.type === "getHeight" && data.id === "navFrame") postHeight();
+          if (data.type === "getHeight" && data.id === "navFrame") {
+            postHeight();
+          }
         });
 
         window.addEventListener("load", postHeight);
