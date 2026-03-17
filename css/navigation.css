@@ -21,19 +21,20 @@ a{color:inherit}
 .site-header__inner{
   max-width:1200px;
   margin:0 auto;
-  padding:14px 0;
+  padding:14px 6px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:16px;
   background-color:#fbfcf6;
 }
+
 .brand{
   display:flex;
   align-items:center;
   gap:12px;
   min-width:0;
-  margin-left:-18px;
+  margin-left:-14px;
   cursor:pointer;
   user-select:none;
   border-radius:12px;
