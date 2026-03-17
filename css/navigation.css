@@ -21,14 +21,13 @@ a{color:inherit}
 .site-header__inner{
   max-width:1200px;
   margin:0 auto;
-  padding:14px 18px;
+  padding:14px 0;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:16px;
   background-color:#fbfcf6;
 }
-
 .brand{
   display:flex;
   align-items:center;
