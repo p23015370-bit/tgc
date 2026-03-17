@@ -19,13 +19,15 @@ a{color:inherit}
 }
 
 .site-header__inner{
-  max-width:1200px !important;
-  margin:0 auto !important;
-  padding:14px 24px !important;
-  display:flex !important;
-  align-items:center !important;
-  gap:16px !important;
-  background-color:#fbfcf6 !important;
+  width:100%;
+  max-width:none;
+  margin:0;
+  padding:14px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  background-color:#fbfcf6;
 }
 
 .brand{
