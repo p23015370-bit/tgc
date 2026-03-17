@@ -21,10 +21,9 @@ a{color:inherit}
 .site-header__inner{
   max-width:1200px !important;
   margin:0 auto !important;
-  padding:14px 60px !important;
+  padding:14px 24px !important;
   display:flex !important;
   align-items:center !important;
-  justify-content:space-between !important;
   gap:16px !important;
   background-color:#fbfcf6 !important;
 }
@@ -34,11 +33,19 @@ a{color:inherit}
   align-items:center !important;
   gap:12px !important;
   min-width:0 !important;
-  margin-left:30px !important;
   cursor:pointer !important;
   user-select:none !important;
   border-radius:12px !important;
   padding:6px 0 !important;
+  margin-left:0 !important;
+}
+
+.hotline{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex:0 0 auto;
+  margin-left:auto;
 }
 .brand:focus{
   outline:none;
