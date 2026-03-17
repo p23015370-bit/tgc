@@ -21,7 +21,7 @@ a{color:inherit}
 .site-header__inner{
   max-width:1200px;
   margin:0 auto;
-  padding:14px 0 !important;
+  padding:14px 24px 14px 24px;
   display:flex;
   align-items:center;
   justify-content:space-between;
