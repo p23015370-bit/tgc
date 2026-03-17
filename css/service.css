@@ -1,0 +1,67 @@
+
+
+
+.certNote{
+  margin: 0 0 14px;
+  line-height: 1.8;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+
+.certGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  justify-content: center;
+}
+
+
+.certImgBox {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #f1f5f9;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  box-sizing: border-box;
+}
+
+.certImg {
+  max-width: 88%;
+  max-height: 88%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.reveal{
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .6s ease, transform .6s ease;
+  will-change: opacity, transform;
+}
+
+.reveal.is-in{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.pvGrid .pvCard.reveal{
+  transition-duration: .55s;
+}
+
+
+@media (prefers-reduced-motion: reduce){
+  .reveal,
+  .reveal.is-in{
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

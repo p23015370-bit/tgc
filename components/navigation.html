@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Navigation</title>
+    <link rel="stylesheet" href="../css/navigation.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <div class="brand" role="button" tabindex="0" aria-label="返回首页">
+          <img class="brand__logo" src="../img/888.jpg" alt="LOGO" />
+          <div class="brand__name">通源塑胶工业（苏州）有限公司</div>
+        </div>
+
+        <div class="hotline">
+          <a class="call-btn" href="tel:+8613584259823">立马拨打咨询</a>
+        </div>
+      </div>
+
+      <div class="header-divider"></div>
+
+      <div class="nav-row">
+        <div class="nav-row__inner">
+          
+          <form id="navSearch" class="search" method="get" role="search">
+            <input
+              class="search__input"
+              type="search"
+              name="q"
+              placeholder="请输入搜索关键词"
+            />
+            <button class="search__btn" type="submit">搜索</button>
+          </form>
+
+          <nav class="nav" aria-label="主导航">
+            <a class="nav__link" href="../index.html#top">网站首页</a>
+            <a class="nav__link" href="../aboutus.html">关于我们</a>
+            <a class="nav__link" href="../productview.html">产品展示</a>
+            <a class="nav__link" href="../service.html">服务和质量承诺</a>
+            <a class="nav__link" href="../contactus.html">联系我们</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <script>
+      (function () {
+        const HOME = "../index.html#top";
+        const PRODUCT = "../productview.html";
+
+        const ORIGIN = window.location.origin;
+
+        const brand = document.querySelector(".brand");
+        if (brand) {
+          brand.addEventListener(
+            "click",
+            () => (window.parent.location.href = HOME),
+          );
+          brand.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              window.parent.location.href = HOME;
+            }
+          });
+        }
+
+        document.querySelectorAll(".nav__link").forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const href = a.getAttribute("href");
+            if (!href) return;
+            window.parent.location.href = href;
+          });
+        });
+
+        const form = document.getElementById("navSearch");
+        if (form) {
+          form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const input = form.querySelector('input[name="q"]');
+            const q = (input?.value || "").trim();
+
+            const target = PRODUCT + (q ? "?q=" + encodeURIComponent(q) : "");
+            window.parent.location.href = target;
+          });
+        }
+
+        try {
+          const parentPath =
+            window.parent.location.pathname || location.pathname;
+          const current = parentPath
+            .split("/")
+            .pop()
+            .split("?")[0]
+            .split("#")[0];
+
+          document.querySelectorAll(".nav__link").forEach((a) => {
+            const href = a.getAttribute("href") || "";
+            const file = href.split("/").pop().split("#")[0].split("?")[0];
+
+            const isHome =
+              (current === "homepage.html" || current === "") &&
+              file === "homepage.html";
+            const isMatch = file && current && file === current;
+
+            if (isHome || isMatch) a.classList.add("is-active");
+            else a.classList.remove("is-active");
+          });
+        } catch (err) {}
+
+        let lastH = 0;
+        function postHeight() {
+          const h = Math.ceil(document.documentElement.scrollHeight);
+          if (Math.abs(h - lastH) < 2) return;
+          lastH = h;
+
+          window.parent.postMessage(
+            { type: "setHeight", id: "navFrame", height: h },
+            ORIGIN,
+          );
+        }
+
+        window.addEventListener("message", (event) => {
+          if (event.origin !== ORIGIN) return;
+          const data = event.data;
+          if (!data || typeof data !== "object") return;
+          if (data.type === "getHeight" && data.id === "navFrame") postHeight();
+        });
+
+        window.addEventListener("load", postHeight);
+
+        const logo = document.querySelector(".brand__logo");
+        if (logo && !logo.complete) {
+          logo.addEventListener("load", postHeight);
+          logo.addEventListener("error", postHeight);
+        } else {
+          setTimeout(postHeight, 60);
+        }
+
+        setTimeout(postHeight, 300);
+      })();
+    </script>
+  </body>
+</html>

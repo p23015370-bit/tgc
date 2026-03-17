@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>服务与质量承诺</title>
+
+    <link rel="stylesheet" href="css/productview.css" />
+    <link rel="stylesheet" href="css/homepage.css" />
+
+    <link rel="stylesheet" href="css/service.css" />
+  </head>
+
+  <body>
+    <div
+      id="onlineConsult"
+      class="onlineConsult"
+      role="button"
+      aria-label="在线咨询"
+    >
+      <div class="ocTop">
+        <img class="ocAvatar" src="img/kefu.jpg" alt="客服" />
+      </div>
+      <div class="ocBottom">
+        <span>在线</span>
+        <span>咨询</span>
+      </div>
+    </div>
+
+    <iframe
+      id="navFrame"
+      class="embed embed-nav"
+      src="components/navigation.html"
+      title="Navigation"
+      scrolling="no"
+    ></iframe>
+
+    <header class="pvHero reveal">
+      <div class="wrap">
+        <h1 class="pvTitle">服务与质量承诺</h1>
+        <div class="sectionDivider"></div>
+
+        <p class="pvSub">
+          我们坚持以客户为中心，持续改进产品与服务流程，确保交付稳定、合规与可追溯。
+          以下为部分资质与认证证书展示。
+        </p>
+      </div>
+    </header>
+
+    <main class="pvMain">
+      <div class="wrap">
+        <section class="pvSection" aria-label="Service and quality commitment">
+          <p class="certNote reveal">
+            • 质量承诺：原料 / 生产 / 出厂多重检验，批次追溯，异常快速响应。<br />
+            • 服务承诺：售前选型建议，售后技术支持，交付周期透明可控。<br />
+            • 合规与认证：按客户与行业要求提供资质文件与检测报告。
+          </p>
+
+          <div class="pvGrid certGrid">
+            <article class="pvCard show reveal">
+              <div class="certImgBox">
+                <img class="certImg" src="img/Asset 31.png" alt="证书 01" />
+              </div>
+              <div class="pvCardBody">
+                <h3 class="pvName">质量管理体系认证</h3>
+                <p class="pvDesc">覆盖生产与检验流程，确保一致性与可追溯。</p>
+                <div class="pvMeta">
+                  <span class="badge">体系认证</span>
+                  <span class="badge">有效期：可填写</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="pvCard show reveal">
+              <div class="certImgBox">
+                <img class="certImg" src="img/Asset 41.png" alt="证书 02" />
+              </div>
+              <div class="pvCardBody">
+                <h3 class="pvName">环境管理体系认证</h3>
+                <p class="pvDesc">持续优化资源使用与环保合规，推动绿色生产。</p>
+                <div class="pvMeta">
+                  <span class="badge">体系认证</span>
+                  <span class="badge">绿色制造</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="pvCard show reveal">
+              <div class="certImgBox">
+                <img
+                  class="certImg"
+                  src="img/ISCC-blue-logo-1024x614 (1).png"
+                  alt="证书 03"
+                />
+              </div>
+              <div class="pvCardBody">
+                <h3 class="pvName">产品检测报告</h3>
+                <p class="pvDesc">关键指标检测，满足客户与行业标准要求。</p>
+                <div class="pvMeta">
+                  <span class="badge">检测报告</span>
+                  <span class="badge">批次可追溯</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <p class="emptyTip reveal" style="margin-top: 18px">
+            如需了解完整资质清单和电子版证书，请通过“在线咨询”联系我们。
+          </p>
+        </section>
+      </div>
+    </main>
+
+    <iframe
+      id="footerFrame"
+      class="embed embed-footer"
+      src="components/footer.html"
+      title="Footer"
+      scrolling="no"
+    ></iframe>
+
+    <script>
+      (function () {
+        const EXTRA_PADDING = 8;
+        const MIN_NAV_H = 90;
+        const MIN_FOOTER_H = 220;
+
+        const navFrame = document.getElementById("navFrame");
+        const footerFrame = document.getElementById("footerFrame");
+
+        const allowedOrigins = new Set([window.location.origin]);
+
+        function setIFrameHeight(frame, h) {
+          if (!frame) return;
+          const minH = frame.id === "navFrame" ? MIN_NAV_H : MIN_FOOTER_H;
+          const next = Math.max(minH, Number(h || 0) + EXTRA_PADDING);
+          frame.style.height = next + "px";
+        }
+
+        window.addEventListener("message", (event) => {
+          if (!allowedOrigins.has(event.origin)) return;
+
+          const data = event.data;
+          if (!data || typeof data !== "object") return;
+
+          const id = data.id;
+          const height = data.height;
+
+          if (!id || typeof height !== "number") return;
+
+          if (id === "navFrame") setIFrameHeight(navFrame, height);
+          if (id === "footerFrame") setIFrameHeight(footerFrame, height);
+        });
+
+        function requestHeight(frame) {
+          if (!frame || !frame.contentWindow) return;
+          try {
+            frame.contentWindow.postMessage(
+              { type: "getHeight", id: frame.id },
+              window.location.origin,
+            );
+          } catch (e) {}
+        }
+
+        navFrame &&
+          navFrame.addEventListener("load", () => requestHeight(navFrame));
+        footerFrame &&
+          footerFrame.addEventListener("load", () =>
+            requestHeight(footerFrame),
+          );
+      })();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        (function () {
+          const el = document.getElementById("onlineConsult");
+          if (!el) return;
+
+          const LINK = "https://wa.me/60123456789";
+
+          try {
+            const saved = JSON.parse(localStorage.getItem("oc_pos") || "null");
+            if (
+              saved &&
+              typeof saved.x === "number" &&
+              typeof saved.y === "number"
+            ) {
+              el.style.left = saved.x + "px";
+              el.style.top = saved.y + "px";
+              el.style.right = "auto";
+              el.style.bottom = "auto";
+            }
+          } catch (e) {}
+
+          let startX = 0,
+            startY = 0,
+            startLeft = 0,
+            startTop = 0;
+          let dragging = false,
+            moved = false;
+
+          function clamp(v, min, max) {
+            return Math.max(min, Math.min(max, v));
+          }
+
+          function pointerDown(e) {
+            dragging = true;
+            moved = false;
+            el.setPointerCapture(e.pointerId);
+
+            const rect = el.getBoundingClientRect();
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = rect.left;
+            startTop = rect.top;
+
+            el.style.left = rect.left + "px";
+            el.style.top = rect.top + "px";
+            el.style.right = "auto";
+            el.style.bottom = "auto";
+          }
+
+          function pointerMove(e) {
+            if (!dragging) return;
+
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+
+            const w = el.offsetWidth;
+            const h = el.offsetHeight;
+            const maxX = window.innerWidth - w - 6;
+            const maxY = window.innerHeight - h - 6;
+
+            const nextLeft = clamp(startLeft + dx, 6, maxX);
+            const nextTop = clamp(startTop + dy, 6, maxY);
+
+            el.style.left = nextLeft + "px";
+            el.style.top = nextTop + "px";
+          }
+
+          function pointerUp() {
+            if (!dragging) return;
+            dragging = false;
+
+            try {
+              const rect = el.getBoundingClientRect();
+              localStorage.setItem(
+                "oc_pos",
+                JSON.stringify({ x: rect.left, y: rect.top }),
+              );
+            } catch (e) {}
+          }
+
+          el.addEventListener("pointerdown", pointerDown);
+          el.addEventListener("pointermove", pointerMove);
+          el.addEventListener("pointerup", pointerUp);
+          el.addEventListener("pointercancel", pointerUp);
+
+          el.addEventListener("click", (e) => {
+            if (moved) return;
+            window.open(LINK, "_blank", "noopener");
+          });
+        })();
+      });
+
+      (function () {
+        const items = Array.from(document.querySelectorAll(".reveal"));
+        if (!items.length) return;
+
+        if (!("IntersectionObserver" in window)) {
+          items.forEach((el) => el.classList.add("is-in"));
+          return;
+        }
+
+        const cards = document.querySelectorAll(".pvGrid .pvCard.reveal");
+        cards.forEach((el, i) => {
+          el.style.transitionDelay = i * 90 + "ms";
+        });
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-in");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            root: null,
+            threshold: 0.12,
+            rootMargin: "0px 0px -10% 0px",
+          },
+        );
+
+        items.forEach((el) => io.observe(el));
+      })();
+    </script>
+  </body>
+</html>

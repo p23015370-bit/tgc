@@ -1,0 +1,143 @@
+﻿<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>æœç´¢ç»“æžœ</title>
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial;
+        margin: 0;
+        padding: 24px;
+      }
+      .wrap {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .title {
+        font-size: 28px;
+        font-weight: 800;
+        margin: 0 0 8px;
+      }
+      .meta {
+        opacity: 0.7;
+        margin: 0 0 18px;
+      }
+      .item {
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .item a {
+        font-size: 18px;
+        font-weight: 700;
+        color: inherit;
+        text-decoration: none;
+      }
+      .item a:hover {
+        text-decoration: underline;
+      }
+      .snippet {
+        margin: 8px 0 0;
+        line-height: 1.8;
+        opacity: 0.85;
+      }
+      mark {
+        padding: 0 3px;
+      }
+      .empty {
+        padding: 24px 0;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1 class="title">æœç´¢ç»“æžœ</h1>
+      <p class="meta" id="meta"></p>
+      <div id="results"></div>
+    </div>
+
+    <script>
+      const SEARCH_INDEX = [
+        {
+          title: "äº§å“å±•ç¤º",
+          url: "../pages/productview.html",
+          content:
+            "é«˜éŸ§æ€§ å¼ºæ‹‰ä¼¸ ä¸æ˜“æ–­è£‚ æ›´é€‚åˆé«˜é€Ÿç¼ ç»• çº³ç±³å¤šå±‚ç»“æž„ ä¿æŒåŠ› æ‰˜ç›˜è¿è¾“ç¨³å®šæ€§",
+        },
+        {
+          title: "è”ç³»æˆ‘ä»¬",
+          url: "../pages/contactus.html",
+          content: "è”ç³»æ–¹å¼ ç”µè¯ é‚®ç®± åœ°å€ è¡¨å• å’¨è¯¢ åˆä½œ",
+        },
+        {
+          title: "å…³äºŽæˆ‘ä»¬",
+          url: "../pages/aboutus.html",
+          content: "æˆ‘ä»¬æ°¸è¿œåªåšæœ€å¥½çš„ æ›´å°‘ææ–™åšåˆ°æ›´ç¨³å›º ç†å¿µ å·¥è‰º é…æ–¹",
+        },
+      ];
+
+      function getQueryParam(name) {
+        const params = new URLSearchParams(window.location.search);
+        return (params.get(name) || "").trim();
+      }
+
+      function highlight(text, keywords) {
+        let out = text;
+        keywords.forEach((k) => {
+          if (!k) return;
+          const reg = new RegExp(
+            k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+            "ig",
+          );
+          out = out.replace(reg, (m) => `<mark>${m}</mark>`);
+        });
+        return out;
+      }
+
+      function matchItem(item, keywords) {
+        const hay = (item.title + " " + item.content).toLowerCase();
+        return keywords.every((k) => hay.includes(k.toLowerCase()));
+      }
+
+      const q = getQueryParam("q");
+      const meta = document.getElementById("meta");
+      const resultsEl = document.getElementById("results");
+
+      if (!q) {
+        meta.textContent = "è¯·è¾“å…¥å…³é”®è¯åŽå†æœç´¢ã€‚";
+        resultsEl.innerHTML = `<div class="empty">æ²¡æœ‰æŸ¥è¯¢å…³é”®è¯ã€‚</div>`;
+      } else {
+        const keywords = q.split(/\s+/).filter(Boolean);
+
+        const hits = SEARCH_INDEX.filter((item) => matchItem(item, keywords));
+
+        meta.textContent = `å…³é”®è¯ï¼š${q} Â· å…± ${hits.length} æ¡ç»“æžœ`;
+
+        if (hits.length === 0) {
+          resultsEl.innerHTML = `<div class="empty">æ²¡æœ‰æ‰¾åˆ°ç›¸å…³å†…å®¹ï¼Œè¯·æ¢ä¸ªå…³é”®è¯è¯•è¯•ã€‚</div>`;
+        } else {
+          resultsEl.innerHTML = hits
+            .map((item) => {
+              const snippet =
+                item.content.slice(0, 90) +
+                (item.content.length > 90 ? "..." : "");
+              return `
+            <div class="item">
+              <a href="${item.url}">${highlight(item.title, keywords)}</a>
+              <p class="snippet">${highlight(snippet, keywords)}</p>
+            </div>
+          `;
+            })
+            .join("");
+        }
+      }
+    </script>
+  </body>
+</html>
+

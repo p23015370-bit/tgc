@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>产品详情</title>
+
+    <link rel="stylesheet" href="css/productview.css" />
+    <link rel="stylesheet" href="css/homepage.css" />
+    <link rel="stylesheet" href="css/productdetails.css" />
+  </head>
+
+  <body>
+    <div
+      id="onlineConsult"
+      class="onlineConsult"
+      role="button"
+      aria-label="在线咨询"
+    >
+      <div class="ocTop">
+        <img class="ocAvatar" src="img/kefu.jpg" alt="客服" />
+      </div>
+      <div class="ocBottom">
+        <span>在线</span>
+        <span>咨询</span>
+      </div>
+    </div>
+
+    <iframe
+      id="navFrame"
+      class="embed embed-nav"
+      src="components/navigation.html"
+      title="Navigation"
+      scrolling="no"
+    ></iframe>
+
+    <header class="pvHero">
+      <div class="wrap">
+        <div class="pdTitleRow pdTitleLeft">
+          <a
+            id="pdBack"
+            class="pdExitInline pdExitAbs"
+            href="productview.html"
+            aria-label="返回产品列表"
+          >
+            <svg class="pdExitIcon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M15.5 5.5L9 12l6.5 6.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+
+          <h1 id="pdTitle" class="pvTitle">产品详情</h1>
+        </div>
+
+        <div class="sectionDivider"></div>
+        <p id="pdSub" class="pvSub">加载中...</p>
+      </div>
+    </header>
+
+    <main class="pvMain">
+      <div class="wrap">
+        <section class="pvSection" aria-label="Product details">
+          <div id="pdWrap" class="pdLayout" hidden>
+            <div class="pdLeft">
+              <div class="pdImgBox">
+                <img id="pdImg" class="pdImg" alt="" hidden />
+                <div
+                  id="pdPlaceholder"
+                  class="pdPlaceholder"
+                  aria-hidden="true"
+                ></div>
+              </div>
+
+              <div id="pdTags" class="pdTags"></div>
+
+              <div class="pdActions"></div>
+            </div>
+
+            <div class="pdRight">
+              <h2 class="pdH2">产品介绍</h2>
+              <p id="pdDesc" class="pdDesc"></p>
+
+              <h2 class="pdH2">规格参数</h2>
+
+              <div class="excelFlat" role="table" aria-label="Specifications">
+                <div class="excelFlatRow head" role="row">
+                  <div class="cell key" role="columnheader">项目</div>
+                  <div class="cell val" role="columnheader">参数</div>
+                </div>
+
+                <div id="pdSpecRows"></div>
+              </div>
+
+              <p class="pdNote">
+                需要更多规格（厚度 / 宽度 / 长度 / 拉伸比 /
+                纸管等）或索取检测报告 / 证书，请点击“立即咨询”。
+              </p>
+            </div>
+          </div>
+
+          <div id="pdEmpty" class="pdEmpty" hidden>
+            <p class="pdEmptyText">未找到该产品，请返回列表重新选择。</p>
+            <a class="pdEmptyBtn" href="productview.html"
+              >返回产品列表</a
+            >
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <iframe
+      id="footerFrame"
+      class="embed embed-footer"
+      src="components/footer.html"
+      title="Footer"
+      scrolling="no"
+    ></iframe>
+
+    <script>
+      (function () {
+        const EXTRA_PADDING = 8;
+        const MIN_NAV_H = 90;
+        const MIN_FOOTER_H = 220;
+
+        const navFrame = document.getElementById("navFrame");
+        const footerFrame = document.getElementById("footerFrame");
+        const allowedOrigins = new Set([window.location.origin]);
+
+        function setIFrameHeight(frame, h) {
+          if (!frame) return;
+          const minH = frame.id === "navFrame" ? MIN_NAV_H : MIN_FOOTER_H;
+          const next = Math.max(minH, Number(h || 0) + EXTRA_PADDING);
+          frame.style.height = next + "px";
+        }
+
+        window.addEventListener("message", (event) => {
+          if (!allowedOrigins.has(event.origin)) return;
+          const data = event.data;
+          if (!data || typeof data !== "object") return;
+
+          const id = data.id;
+          const height = data.height;
+          if (!id || typeof height !== "number") return;
+
+          if (id === "navFrame") setIFrameHeight(navFrame, height);
+          if (id === "footerFrame") setIFrameHeight(footerFrame, height);
+        });
+
+        function requestHeight(frame) {
+          if (!frame || !frame.contentWindow) return;
+          try {
+            frame.contentWindow.postMessage(
+              { type: "getHeight", id: frame.id },
+              window.location.origin,
+            );
+          } catch (e) {}
+        }
+
+        navFrame &&
+          navFrame.addEventListener("load", () => requestHeight(navFrame));
+        footerFrame &&
+          footerFrame.addEventListener("load", () =>
+            requestHeight(footerFrame),
+          );
+      })();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const products = [
+          {
+            id: 1,
+            name: "NEXT手用膜",
+            category: "手用PE膜",
+            img: "img/NEXT.png",
+            desc: "适合日常托盘打包，操作轻松，稳定缠绕，适用于常规物流运输与仓储防护场景。",
+            tags: ["轻量", "日常", "稳定缠绕"],
+            specs: {
+              产品名称: "NEXT手用膜",
+              材质: "LLDPE",
+              适用方式: "手工缠绕",
+              适用场景: "日常托盘打包 / 仓储运输",
+              产品特点: "操作轻松、缠绕稳定、使用方便",
+              规格定制: "支持宽度 / 厚度 / 长度定制",
+            },
+          },
+          {
+            id: 2,
+            name: "Max Stretch Stealth",
+            category: "手用PE膜",
+            img: "img/Max Stretch Stealth.png",
+            desc: "减少耗材浪费，更省空间，更环保，适合对包装效率与综合成本控制有要求的客户。",
+            tags: ["环保", "省空间", "减耗材"],
+            specs: {
+              产品名称: "Max Stretch Stealth",
+              材质: "高性能PE膜",
+              适用方式: "手工缠绕",
+              适用场景: "仓储运输 / 日常包装",
+              产品特点: "减少耗材、节省空间、更加环保",
+              规格定制: "支持宽度 / 厚度 / 长度定制",
+            },
+          },
+          {
+            id: 3,
+            name: "Prime TG Stretch",
+            category: "手用PE膜",
+            img: "img/primetgstretch.png",
+            desc: "抗穿刺表现更好，适合尖角货物与重货包装，能够提供更稳定的防护效果。",
+            tags: ["抗穿刺", "重货", "高韧性"],
+            specs: {
+              产品名称: "Prime TG Stretch",
+              材质: "LLDPE",
+              适用方式: "手工缠绕",
+              适用场景: "尖角货物 / 重货运输",
+              产品特点: "高韧性、抗穿刺、包裹更稳固",
+              规格定制: "支持宽度 / 厚度 / 长度定制",
+            },
+          },
+        ];
+
+        const $ = (id) => document.getElementById(id);
+
+        const pdWrap = $("pdWrap");
+        const pdEmpty = $("pdEmpty");
+        const pdTitle = $("pdTitle");
+        const pdSub = $("pdSub");
+        const pdDesc = $("pdDesc");
+        const pdImg = $("pdImg");
+        const pdPlaceholder = $("pdPlaceholder");
+        const pdTags = $("pdTags");
+        const pdSpecRows = $("pdSpecRows");
+        const pdBack = $("pdBack");
+
+        function escapeHtml(str) {
+          return String(str)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const id = Number(params.get("id"));
+        const fromQ = (params.get("q") || "").trim();
+
+        if (pdBack && fromQ) {
+          pdBack.href = `productview.html?q=${encodeURIComponent(fromQ)}`;
+          const emptyBtn = pdEmpty?.querySelector("a");
+          if (emptyBtn) emptyBtn.href = pdBack.href;
+        }
+
+        const product = products.find((p) => p.id === id);
+
+        if (!product) {
+          pdSub.textContent = "未找到该产品";
+          if (pdEmpty) pdEmpty.hidden = false;
+          return;
+        }
+
+        document.title = product.name + " - 产品详情";
+        pdTitle.textContent = product.name;
+        pdSub.textContent = `分类：${product.category} · 支持规格定制 · 可提供证书 / 检测报告`;
+        pdDesc.textContent = product.desc || "";
+
+        if (product.img) {
+          pdImg.src = product.img;
+          pdImg.alt = product.name;
+          pdImg.hidden = false;
+          pdPlaceholder.hidden = true;
+        } else {
+          pdImg.hidden = true;
+          pdPlaceholder.hidden = false;
+        }
+
+        pdTags.innerHTML = "";
+        (product.tags || []).slice(0, 6).forEach((t) => {
+          const span = document.createElement("span");
+          span.className = "badge";
+          span.textContent = t;
+          pdTags.appendChild(span);
+        });
+
+        pdSpecRows.innerHTML = "";
+        const specs = product.specs || {};
+        const keys = Object.keys(specs);
+
+        if (!keys.length) {
+          const row = document.createElement("div");
+          row.className = "excelFlatRow";
+          row.innerHTML = `
+        <div class="cell key">规格</div>
+        <div class="cell val">请咨询获取详细规格参数</div>
+      `;
+          pdSpecRows.appendChild(row);
+        } else {
+          keys.forEach((k) => {
+            const row = document.createElement("div");
+            row.className = "excelFlatRow";
+            row.innerHTML = `
+          <div class="cell key">${escapeHtml(k)}</div>
+          <div class="cell val">${escapeHtml(specs[k])}</div>
+        `;
+            pdSpecRows.appendChild(row);
+          });
+        }
+
+        pdWrap.hidden = false;
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        (function () {
+          const el = document.getElementById("onlineConsult");
+          if (!el) return;
+
+          const LINK = "https://wa.me/60123456789";
+
+          try {
+            const saved = JSON.parse(localStorage.getItem("oc_pos") || "null");
+            if (
+              saved &&
+              typeof saved.x === "number" &&
+              typeof saved.y === "number"
+            ) {
+              el.style.left = saved.x + "px";
+              el.style.top = saved.y + "px";
+              el.style.right = "auto";
+              el.style.bottom = "auto";
+            }
+          } catch (e) {}
+
+          let startX = 0,
+            startY = 0,
+            startLeft = 0,
+            startTop = 0;
+          let dragging = false,
+            moved = false;
+
+          function clamp(v, min, max) {
+            return Math.max(min, Math.min(max, v));
+          }
+
+          function pointerDown(e) {
+            dragging = true;
+            moved = false;
+            el.setPointerCapture(e.pointerId);
+
+            const rect = el.getBoundingClientRect();
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = rect.left;
+            startTop = rect.top;
+
+            el.style.left = rect.left + "px";
+            el.style.top = rect.top + "px";
+            el.style.right = "auto";
+            el.style.bottom = "auto";
+          }
+
+          function pointerMove(e) {
+            if (!dragging) return;
+
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+
+            const w = el.offsetWidth;
+            const h = el.offsetHeight;
+            const maxX = window.innerWidth - w - 6;
+            const maxY = window.innerHeight - h - 6;
+
+            const nextLeft = clamp(startLeft + dx, 6, maxX);
+            const nextTop = clamp(startTop + dy, 6, maxY);
+
+            el.style.left = nextLeft + "px";
+            el.style.top = nextTop + "px";
+          }
+
+          function pointerUp() {
+            if (!dragging) return;
+            dragging = false;
+
+            const left = parseFloat(el.style.left) || 0;
+            const top = parseFloat(el.style.top) || 0;
+            try {
+              localStorage.setItem(
+                "oc_pos",
+                JSON.stringify({ x: left, y: top }),
+              );
+            } catch (err) {}
+
+            if (!moved) {
+              window.open(LINK, "_blank", "noopener");
+            }
+          }
+
+          el.addEventListener("pointerdown", pointerDown);
+          el.addEventListener("pointermove", pointerMove);
+          el.addEventListener("pointerup", pointerUp);
+          el.addEventListener("pointercancel", pointerUp);
+
+          window.addEventListener("resize", () => {
+            const rect = el.getBoundingClientRect();
+            const w = el.offsetWidth;
+            const h = el.offsetHeight;
+            const maxX = window.innerWidth - w - 6;
+            const maxY = window.innerHeight - h - 6;
+            const x = clamp(rect.left, 6, maxX);
+            const y = clamp(rect.top, 6, maxY);
+            el.style.left = x + "px";
+            el.style.top = y + "px";
+            el.style.right = "auto";
+            el.style.bottom = "auto";
+            try {
+              localStorage.setItem("oc_pos", JSON.stringify({ x, y }));
+            } catch (e) {}
+          });
+        })();
+      });
+    </script>
+  </body>
+</html>

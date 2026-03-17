@@ -1,0 +1,385 @@
+﻿<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Homepage</title>
+    <link rel="stylesheet" href="css/homepage.css" />
+  </head>
+  <body>
+    <div
+      id="onlineConsult"
+      class="onlineConsult"
+      role="button"
+      aria-label="在线咨询"
+    >
+      <div class="ocTop">
+        <img class="ocAvatar" src="img/kefu.jpg" alt="客服" />
+      </div>
+      <div class="ocBottom">
+        <span>在线</span>
+        <span>咨询</span>
+      </div>
+    </div>
+
+    <iframe
+      id="navFrame"
+      class="embed embed-nav"
+      src="components/navigation.html"
+      title="Navigation"
+      scrolling="no"
+    ></iframe>
+
+    <section class="landing" id="top" aria-label="Landing slider">
+      <div class="landingSlider">
+        <div class="landingSlides" id="landingSlides">
+          <div
+            class="landingSlide active"
+            style="background-image: url(&quot;img/456.jpg&quot;)"
+            data-title="图片 1"
+          ></div>
+
+          <div
+            class="landingSlide"
+            style="background-image: url(&quot;img/pbw.png&quot;)"
+            data-title="图片 2"
+          ></div>
+
+          <div
+            class="landingSlide"
+            style="background-image: url(&quot;img/GGWD.png&quot;)"
+            data-title="图片 3"
+          ></div>
+
+          <div
+            class="landingSlide"
+            style="background-image: url(&quot;img/load.png&quot;)"
+            data-title="图片 4"
+          ></div>
+
+          <div class="landingOverlay">
+            <div class="wrap landingContent">
+              <h1 class="landingTitle"></h1>
+              <div class="landingActions"></div>
+            </div>
+          </div>
+
+          <button
+            class="landingArrow left"
+            id="landingPrev"
+            type="button"
+            aria-label="Prev"
+          >
+            ‹
+          </button>
+          <button
+            class="landingArrow right"
+            id="landingNext"
+            type="button"
+            aria-label="Next"
+          >
+            ›
+          </button>
+
+          <div
+            class="landingDots"
+            id="landingDots"
+            aria-label="Landing dots"
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <main>
+      <section class="section" id="about">
+        <div class="wrap aboutGrid">
+          <div class="aboutLeft">
+            <h1 class="sectionTitle">关于我们</h1>
+            <div class="sectionDivider"></div>
+
+            <p class="sectionText">
+              通源塑胶工业（苏州）有限公司成立于2000年，系通源集团（成立于1942年）在中国成立的子公司。纳米缠绕膜是集团主营的产品之一。
+              在2016年，通源是全亚洲优先引入德国纳米流延设备的缠绕膜制造商；目前产能为一个月一万公吨。公司营运的目标是为客户节能减排，降低成本，减塑，减碳，同时为客户保障托盘运输的安全。纳米缠绕膜的特殊性质如高韧性、强拉伸、不易断裂，更加适合于高速缠绕，利于识别条形码。
+            </p>
+
+            <a class="btn" href="aboutus.html">了解详情</a>
+          </div>
+
+          <div class="aboutRight">
+            <img class="aboutImg" src="img/tg.jpg" alt="关于我们图片" />
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="section" id="products">
+        <div class="wrap">
+          <h1 class="sectionTitle">产品展示</h1>
+          <div class="sectionDivider"></div>
+
+          <div class="productGrid">
+            <a class="productCard" href="productview.html" aria-label="产品 1">
+              <div class="imgBox">
+                <img class="pimg" src="img/NEXT.png" alt="" />
+              </div>
+              <div class="productName">NEXT预拉伸手用膜</div>
+            </a>
+
+            <a class="productCard" href="productview.html" aria-label="产品 2">
+              <div class="imgBox">
+                <img class="pimg" src="img/Max Stretch Stealth.png" alt="" />
+              </div>
+              <div class="productName">Max Stretch Stealth</div>
+            </a>
+            <a class="productCard" href="productview.html" aria-label="产品 2">
+              <div class="imgBox">
+                <img class="pimg" src="img/primetgstretch.png" alt="" />
+              </div>
+              <div class="productName">Prime TG Stretch</div>
+            </a>
+          </div>
+
+          <div class="sectionActions">
+            <a class="btn" href="productview.html">了解详情</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <iframe
+      id="footerFrame"
+      class="embed embed-footer"
+      src="components/footer.html"
+      title="Footer"
+      scrolling="no"
+    ></iframe>
+
+    <script>
+      window.addEventListener("message", (event) => {
+        const data = event.data;
+        if (!data || typeof data !== "object") return;
+        if (data.type !== "setHeight") return;
+
+        const iframe = document.getElementById(data.id);
+        if (!iframe) return;
+
+        iframe.style.height = data.height + 12 + "px";
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const landingSlides = Array.from(
+          document.querySelectorAll(".landingSlide"),
+        );
+        const dotsWrap = document.getElementById("landingDots");
+        const prevBtn = document.getElementById("landingPrev");
+        const nextBtn = document.getElementById("landingNext");
+        const slider = document.querySelector(".landingSlider");
+
+        if (landingSlides.length && dotsWrap) {
+          let idx = 0;
+          let t = null;
+          const ms = 3500;
+
+          function renderDots() {
+            dotsWrap.innerHTML = "";
+            landingSlides.forEach((_, i) => {
+              const d = document.createElement("button");
+              d.type = "button";
+              d.className = "landingDot" + (i === idx ? " active" : "");
+              d.addEventListener("click", () => go(i, true));
+              dotsWrap.appendChild(d);
+            });
+          }
+
+          function go(i, user = false) {
+            landingSlides[idx].classList.remove("active");
+            idx = (i + landingSlides.length) % landingSlides.length;
+            landingSlides[idx].classList.add("active");
+            renderDots();
+            if (user) restart();
+          }
+
+          function next(user = false) {
+            go(idx + 1, user);
+          }
+
+          function prev(user = false) {
+            go(idx - 1, user);
+          }
+
+          function start() {
+            if (t) return;
+            t = setInterval(() => next(false), ms);
+          }
+
+          function stop() {
+            if (t) clearInterval(t);
+            t = null;
+          }
+
+          function restart() {
+            stop();
+            start();
+          }
+
+          if (prevBtn) prevBtn.addEventListener("click", () => prev(true));
+          if (nextBtn) nextBtn.addEventListener("click", () => next(true));
+
+          if (slider) {
+            slider.addEventListener("mouseenter", stop);
+            slider.addEventListener("mouseleave", start);
+            slider.addEventListener("touchstart", stop, { passive: true });
+            slider.addEventListener("touchend", start, { passive: true });
+          }
+
+          document.addEventListener("visibilitychange", () => {
+            if (document.hidden) stop();
+            else start();
+          });
+
+          renderDots();
+          start();
+        }
+
+        function revealOnceById(id, threshold = 0.2) {
+          const el = document.getElementById(id);
+          if (!el) return;
+
+          el.classList.add("reveal");
+
+          const io = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((e) => {
+                if (e.isIntersecting) {
+                  e.target.classList.add("in");
+                  io.unobserve(e.target);
+                }
+              });
+            },
+            { threshold },
+          );
+
+          io.observe(el);
+        }
+
+        revealOnceById("about", 0.2);
+        revealOnceById("products", 0.2);
+
+        (function () {
+          const el = document.getElementById("onlineConsult");
+          if (!el) return;
+
+          const LINK = "https://wa.me/60123456789"; // 改成你的咨询链接
+
+          try {
+            const saved = JSON.parse(localStorage.getItem("oc_pos") || "null");
+            if (
+              saved &&
+              typeof saved.x === "number" &&
+              typeof saved.y === "number"
+            ) {
+              el.style.left = saved.x + "px";
+              el.style.top = saved.y + "px";
+              el.style.right = "auto";
+              el.style.bottom = "auto";
+            }
+          } catch (e) {}
+
+          let startX = 0,
+            startY = 0,
+            startLeft = 0,
+            startTop = 0;
+          let dragging = false,
+            moved = false;
+
+          function clamp(v, min, max) {
+            return Math.max(min, Math.min(max, v));
+          }
+
+          function pointerDown(e) {
+            dragging = true;
+            moved = false;
+            el.setPointerCapture(e.pointerId);
+
+            const rect = el.getBoundingClientRect();
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = rect.left;
+            startTop = rect.top;
+
+            el.style.left = rect.left + "px";
+            el.style.top = rect.top + "px";
+            el.style.right = "auto";
+            el.style.bottom = "auto";
+          }
+
+          function pointerMove(e) {
+            if (!dragging) return;
+
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+
+            const w = el.offsetWidth;
+            const h = el.offsetHeight;
+            const maxX = window.innerWidth - w - 6;
+            const maxY = window.innerHeight - h - 6;
+
+            const nextLeft = clamp(startLeft + dx, 6, maxX);
+            const nextTop = clamp(startTop + dy, 6, maxY);
+
+            el.style.left = nextLeft + "px";
+            el.style.top = nextTop + "px";
+          }
+
+          function pointerUp(e) {
+            if (!dragging) return;
+            dragging = false;
+
+            const left = parseFloat(el.style.left) || 0;
+            const top = parseFloat(el.style.top) || 0;
+            try {
+              localStorage.setItem(
+                "oc_pos",
+                JSON.stringify({ x: left, y: top }),
+              );
+            } catch (err) {}
+
+            if (!moved) {
+              window.open(LINK, "_blank", "noopener");
+            }
+          }
+
+          el.addEventListener("pointerdown", pointerDown);
+          el.addEventListener("pointermove", pointerMove);
+          el.addEventListener("pointerup", pointerUp);
+          el.addEventListener("pointercancel", pointerUp);
+
+          window.addEventListener("resize", () => {
+            const rect = el.getBoundingClientRect();
+            const w = el.offsetWidth,
+              h = el.offsetHeight;
+            const maxX = window.innerWidth - w - 6;
+            const maxY = window.innerHeight - h - 6;
+            const x = clamp(rect.left, 6, maxX);
+            const y = clamp(rect.top, 6, maxY);
+            el.style.left = x + "px";
+            el.style.top = y + "px";
+            el.style.right = "auto";
+            el.style.bottom = "auto";
+            try {
+              localStorage.setItem("oc_pos", JSON.stringify({ x, y }));
+            } catch (e) {}
+          });
+        })();
+      });
+    </script>
+  </body>
+</html>
+6
