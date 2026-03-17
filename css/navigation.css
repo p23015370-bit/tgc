@@ -21,7 +21,26 @@ a{color:inherit}
   --muted:#667085;
   --line:#E6E8EC;
 }
+#navFrame{
+  display:block;
+  width:100%;
+  margin:0 !important;
+  padding:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  overflow:hidden !important;
+  border:0 !important;
+  vertical-align:top !important;
+}
 
+#navFrame + *,
+#navFrame + figure,
+#navFrame + section,
+#navFrame + div{
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
 .site-header{
   background:#fbfcf6;
   border-bottom:0;
