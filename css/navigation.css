@@ -33,7 +33,7 @@ a{color:inherit}
   align-items:center;
   gap:12px;
   min-width:0;
-
+  margin-left:-10px;
   cursor:pointer;
   user-select:none;
   border-radius:12px;
