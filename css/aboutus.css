@@ -98,8 +98,8 @@ a{color:inherit;text-decoration:none}
   position:absolute;
   top:22px;
   bottom:22px;
-  left:-48px;
-  right:-48px;
+  left:-80px;
+  right:-80px;
   background:linear-gradient(90deg,rgba(121,134,151,.95),rgba(144,158,176,.92));
   clip-path:polygon(0 14%,100% 0,100% 86%,0 100%);
   z-index:0;
