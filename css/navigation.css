@@ -19,26 +19,26 @@ a{color:inherit}
 }
 
 .site-header__inner{
-  max-width:1200px;
-  margin:0 auto;
-  padding:14px 24px 14px 24px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  background-color:#fbfcf6;
+  max-width:1200px !important;
+  margin:0 auto !important;
+  padding:14px 60px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:16px !important;
+  background-color:#fbfcf6 !important;
 }
 
 .brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
-  margin-left:10px;
-  cursor:pointer;
-  user-select:none;
-  border-radius:12px;
-  padding:6px 0;
+  display:flex !important;
+  align-items:center !important;
+  gap:12px !important;
+  min-width:0 !important;
+  margin-left:30px !important;
+  cursor:pointer !important;
+  user-select:none !important;
+  border-radius:12px !important;
+  padding:6px 0 !important;
 }
 .brand:focus{
   outline:none;
